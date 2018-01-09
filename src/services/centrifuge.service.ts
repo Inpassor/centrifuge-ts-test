@@ -1,6 +1,6 @@
 import {Subject} from 'rxjs/Subject';
 import {Injectable} from '@angular/core';
-import * as Centrifuge from 'centrifuge';
+import {Centrifuge} from 'centrifuge';
 
 import {environment} from '@env';
 import {LoggerService} from './logger.service';
@@ -13,12 +13,12 @@ export class CentrifugeService {
     private _userChannelName: string = null;
     private _messageUidSubscriptions = {};
 
-    public connect(centrifugoOptions: Object): Subject<any> {
+    public connect(centrifugeOptions: Object): Subject<any> {
         const subject = new Subject();
         this.disconnect();
 
         if (!environment.prod) {
-            centrifugoOptions['debug'] = true;
+            centrifugeOptions['debug'] = true;
         }
 
         /*
@@ -26,11 +26,11 @@ export class CentrifugeService {
             'Authorization': 'Bearer 123123',
         };
         */
-
-        this._centrifuge = new Centrifuge(centrifugoOptions);
+console.log(Centrifuge);
+        this._centrifuge = new Centrifuge(centrifugeOptions);
         this._centrifuge.on('connect', (context: any): void => {
-            if (centrifugoOptions['user']) {
-                this._userChannelName = '$user_' + centrifugoOptions['user'];
+            if (centrifugeOptions['user']) {
+                this._userChannelName = '$user_' + centrifugeOptions['user'];
             }
             this.subscribeUser();
             subject.next(null);
@@ -42,7 +42,7 @@ export class CentrifugeService {
         this._centrifuge.on('error', (error: any): void => {
             // TODO: onError event
         });
-        this._centrifuge.connect();
+        // this._centrifuge.connect();
         return subject;
     }
 
