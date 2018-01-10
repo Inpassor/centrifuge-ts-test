@@ -26,7 +26,7 @@ export class CentrifugeService {
             'Authorization': 'Bearer 123123',
         };
         */
-console.log(Centrifuge);
+
         this._centrifuge = new Centrifuge(centrifugeOptions);
         this._centrifuge.on('connect', (context: any): void => {
             if (centrifugeOptions['user']) {
