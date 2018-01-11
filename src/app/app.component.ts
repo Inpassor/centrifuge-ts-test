@@ -10,10 +10,9 @@ import {CentrifugeService} from '../services/centrifuge.service';
 
 export class AppComponent {
 
-    title = 'app';
-
     public constructor(private _centrifugeService: CentrifugeService) {
         this._centrifugeService.connect({
+            insecure: true,
             url: 'ws://centrifugo.local/connection/websocket',
         });
     }

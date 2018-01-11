@@ -42,7 +42,7 @@ export class CentrifugeService {
         this._centrifuge.on('error', (error: any): void => {
             // TODO: onError event
         });
-        // this._centrifuge.connect();
+        this._centrifuge.connect();
         return subject;
     }
 
