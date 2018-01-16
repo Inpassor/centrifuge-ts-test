@@ -38,6 +38,7 @@ export class CentrifugeService {
         });
         this._centrifuge.on('disconnect', (context: any): void => {
             // TODO: onDisonnect event
+
         });
         this._centrifuge.on('error', (error: any): void => {
             // TODO: onError event
