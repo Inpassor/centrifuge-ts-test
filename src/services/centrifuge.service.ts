@@ -70,29 +70,6 @@ export class CentrifugeService {
         this._channels[channel] = subscription;
     }
 
-    private _handleMessage(channel: string, message: any): void {
-        LoggerService.debug('CENTRIFUGO', message);
-        const messageData = message.data;
-        const channelSubjects = this._messageUidSubscriptions[channel];
-        if (!messageData || !channelSubjects) {
-            return;
-        }
-        const uid = messageData.uid;
-        const data = messageData.data;
-        if (uid && data) {
-            if (channelSubjects[uid]) {
-                while (channelSubjects[uid].length > 0) {
-                    const subject: Subject<any> = channelSubjects[uid].shift();
-                    if (subject) {
-                        subject.next(data);
-                        subject.complete();
-                    }
-                }
-                delete(channelSubjects[uid]);
-            }
-        }
-    }
-
     public subscribeUser(): void {
         let channel;
         channel = 'system';
@@ -147,6 +124,29 @@ export class CentrifugeService {
         }
         this.unsubscribeAll();
         this._centrifuge.disconnect();
+    }
+
+    private _handleMessage(channel: string, message: any): void {
+        LoggerService.debug('CENTRIFUGO', message);
+        const messageData = message.data;
+        const channelSubjects = this._messageUidSubscriptions[channel];
+        if (!messageData || !channelSubjects) {
+            return;
+        }
+        const uid = messageData.uid;
+        const data = messageData.data;
+        if (uid && data) {
+            if (channelSubjects[uid]) {
+                while (channelSubjects[uid].length > 0) {
+                    const subject: Subject<any> = channelSubjects[uid].shift();
+                    if (subject) {
+                        subject.next(data);
+                        subject.complete();
+                    }
+                }
+                delete(channelSubjects[uid]);
+            }
+        }
     }
 
 }
