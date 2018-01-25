@@ -5,9 +5,6 @@ import {environment} from '@env';
 @Injectable()
 export class LoggerService {
 
-    constructor() {
-    }
-
     public static log(level: string, ...args: any[]) {
         if (console) {
             const logger = console[level];

@@ -1,6 +1,7 @@
 import {Subject} from 'rxjs/Subject';
 import {Injectable} from '@angular/core';
 import {
+    ICentrifugeConfig,
     Centrifuge,
     Subscription,
 } from 'centrifuge-ts';
@@ -16,12 +17,12 @@ export class CentrifugeService {
     private _userChannelName: string = null;
     private _messageUidSubscriptions = {};
 
-    public connect(centrifugeOptions: Object): Subject<any> {
+    public connect(config: ICentrifugeConfig): Subject<any> {
         const subject = new Subject();
         this.disconnect();
 
         if (!environment.prod) {
-            centrifugeOptions['debug'] = true;
+            config.debug = true;
         }
 
         /*
@@ -30,10 +31,10 @@ export class CentrifugeService {
         };
         */
 
-        this._centrifuge = new Centrifuge(centrifugeOptions);
+        this._centrifuge = new Centrifuge(config);
         this._centrifuge.on('connect', (context: any): void => {
-            if (centrifugeOptions['user']) {
-                this._userChannelName = '$user_' + centrifugeOptions['user'];
+            if (config.user) {
+                this._userChannelName = '$user_' + config.user;
             }
             this.subscribeUser();
             subject.next(null);
@@ -57,7 +58,7 @@ export class CentrifugeService {
         if (!callbacks) {
             callbacks = {};
         }
-        const subscription = this._centrifuge.subscribe(channel, {
+        const subscription: Subscription = this._centrifuge.subscribe(channel, {
             subscribe: (context: any): void => callbacks.subscribe && callbacks.subscribe(context),
             unsubscribe: (context: any): void => callbacks.unsubscribe && callbacks.unsubscribe(context),
             join: (message: any): void => callbacks.join && callbacks.join(message),

@@ -24,7 +24,6 @@
             "styles": [
                 "styles.scss"
             ],
-            "scripts": [],
             "environmentSource": "environments/environment.ts",
             "environments": {
                 "dev": "environments/environment.ts",
@@ -40,6 +39,10 @@
     ],
     "defaults": {
         "styleExt": "scss",
+        "serve": {
+            "host": "localhost",
+            "port": 4400
+        },
         "class": {
             "spec": false
         },
