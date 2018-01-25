@@ -1,6 +1,9 @@
 import {Subject} from 'rxjs/Subject';
 import {Injectable} from '@angular/core';
-import {Centrifuge} from 'centrifuge';
+import {
+    Centrifuge,
+    Subscription,
+} from 'centrifuge-ts';
 
 import {environment} from '@env';
 import {LoggerService} from './logger.service';
