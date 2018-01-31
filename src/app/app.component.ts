@@ -18,15 +18,18 @@ export class AppComponent {
                        private _centrifugeService: CentrifugeService) {
 
         const now = +Date.now();
-        const userUid = 'user_' + now;
-        const timestamp = Math.floor(now / 1000);
-
-        console.log(this._generateClientToken(userUid, timestamp));
+        const user = 'user_' + now;
+        const timestamp = String(Math.floor(now / 1000));
+        const token = this._generateClientToken(user, timestamp);
 
         this._centrifugeService.connect({
-            // sockJS: SockJS,
-            insecure: true,
+            // insecure: true,
             url: this._settingsService.connectionUrl,
+            user,
+            timestamp,
+            token,
+            sockJS: SockJS,
+            debug: true,
         });
     }
 
@@ -42,7 +45,7 @@ export class AppComponent {
 
         const hash = sha256.hmac.create(this._settingsService.secret);
         hash.update(user);
-        hash.update(timestamp + '');
+        hash.update(String(timestamp));
         hash.update(info);
         return hash.hex();
     }
