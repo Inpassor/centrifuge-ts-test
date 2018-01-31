@@ -34,15 +34,6 @@ export class AppComponent {
     }
 
     private _generateClientToken(user: string, timestamp: string | number, info: string = ''): string {
-        /*
-        $ctx = hash_init('sha256', HASH_HMAC, $this->secret);
-        hash_update($ctx, $user);
-        hash_update($ctx, $timestamp);
-        hash_update($ctx, $info);
-
-        return hash_final($ctx);
-         */
-
         const hash = sha256.hmac.create(this._settingsService.secret);
         hash.update(user);
         hash.update(String(timestamp));
