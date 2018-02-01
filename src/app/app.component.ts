@@ -2,9 +2,13 @@ import {Component} from '@angular/core';
 
 import * as SockJS from 'sockjs-client';
 import {sha256} from 'js-sha256';
+import {
+    ICentrifugeError,
+} from 'centrifuge-ts';
 
 import {SettingsService} from '../services/settings.service';
 import {CentrifugeService} from '../services/centrifuge.service';
+import {LoggerService} from '../services/logger.service';
 
 @Component({
     selector: 'app-root',
@@ -23,13 +27,20 @@ export class AppComponent {
         const token = this._generateClientToken(user, timestamp);
 
         this._centrifugeService.connect({
-            // insecure: true,
             url: this._settingsService.connectionUrl,
             user,
             timestamp,
             token,
             sockJS: SockJS,
-            debug: true,
+        }).subscribe(() => {
+            this._centrifugeService.subscribe('system', {
+                message: this._handleMessage
+            });
+            this._centrifugeService.publish('system', 'TEST!!!').subscribe(() => {
+                LoggerService.debug('Publish success!');
+            }, (err: ICentrifugeError) => {
+                LoggerService.debug('Publish error', err);
+            });
         });
     }
 
@@ -39,6 +50,10 @@ export class AppComponent {
         hash.update(String(timestamp));
         hash.update(info);
         return hash.hex();
+    }
+
+    private _handleMessage(message: any): void {
+        LoggerService.debug('CENTRIFUGO', message);
     }
 
 }

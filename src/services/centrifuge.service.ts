@@ -4,6 +4,8 @@ import {
     ICentrifugeConfig,
     Centrifuge,
     Subscription,
+    ICentrifugeMessage,
+    ICentrifugeError,
 } from 'centrifuge-ts';
 
 import {environment} from '@env';
@@ -14,7 +16,6 @@ export class CentrifugeService {
 
     private _centrifuge: Centrifuge = null;
     private _channels = [];
-    private _userChannelName: string = null;
     private _messageUidSubscriptions = {};
 
     public connect(config: ICentrifugeConfig): Subject<any> {
@@ -26,17 +27,13 @@ export class CentrifugeService {
         }
 
         /*
-        centrifugoOptions['authHeaders'] = {
+        config.authHeaders = {
             'Authorization': 'Bearer 123123',
         };
         */
 
         this._centrifuge = new Centrifuge(config);
         this._centrifuge.on('connect', (context: any): void => {
-            if (config.user) {
-                this._userChannelName = '$user_' + config.user;
-            }
-            this.subscribeUser();
             subject.next(null);
             subject.complete();
         });
@@ -51,39 +48,25 @@ export class CentrifugeService {
         return subject;
     }
 
-    public subscribe(channel: string, callbacks?: any): void {
+    public subscribe(channel: string, callbacks: any = {}): void {
         if (this._channels[channel]) {
             return;
-        }
-        if (!callbacks) {
-            callbacks = {};
         }
         const subscription: Subscription = this._centrifuge.subscribe(channel, {
             subscribe: (context: any): void => callbacks.subscribe && callbacks.subscribe(context),
             unsubscribe: (context: any): void => callbacks.unsubscribe && callbacks.unsubscribe(context),
             join: (message: any): void => callbacks.join && callbacks.join(message),
             leave: (message: any): void => callbacks.leave && callbacks.leave(message),
-            message: (message: any): void => callbacks.message && callbacks.message(message),
+            message: (message: any): void => {
+                this._handleMessage(channel, message);
+                if (callbacks.message) {
+                    callbacks.message(message);
+                }
+            },
             error: (errContext: any): void => callbacks.error && callbacks.error(errContext)
         });
         subscription.presence().then(message => callbacks.presence && callbacks.presence(message));
         this._channels[channel] = subscription;
-    }
-
-    public subscribeUser(): void {
-        let channel;
-        channel = 'system';
-        this.subscribe(channel, {
-            message: (message: any): void => {
-                this._handleMessage(channel, message);
-            }
-        });
-        channel = this._userChannelName;
-        this.subscribe(channel, {
-            message: (message: any): void => {
-                this._handleMessage(channel, message);
-            }
-        });
     }
 
     public onMessage(channel: string, uid: string): Subject<any> {
@@ -98,8 +81,29 @@ export class CentrifugeService {
         return subject;
     }
 
-    public onPrivateMessage(uid: string): Subject<any> {
-        return this.onMessage(this._userChannelName, uid);
+    public publish(channel: string, message: any): Subject<any> {
+        const subject = new Subject();
+        const subscription: Subscription = this._channels[channel];
+        if (subscription) {
+            subscription.publish(message).then((response: ICentrifugeMessage) => {
+                if ('status' in response && response['status'] === true) {
+                    subject.next(null);
+                    subject.complete();
+                } else {
+                    subject.error({
+                        error: 'Unknown error accured'
+                    });
+                    subject.complete();
+                }
+            }, (err: ICentrifugeError) => {
+                subject.error(err);
+                subject.complete();
+            });
+        } else {
+            subject.error(`Channel "${channel}" is not subscribed!`);
+            subject.complete();
+        }
+        return subject;
     }
 
     public unsubscribe(channel: string): void {
@@ -124,10 +128,10 @@ export class CentrifugeService {
         }
         this.unsubscribeAll();
         this._centrifuge.disconnect();
+        this._centrifuge = null;
     }
 
     private _handleMessage(channel: string, message: any): void {
-        LoggerService.debug('CENTRIFUGO', message);
         const messageData = message.data;
         const channelSubjects = this._messageUidSubscriptions[channel];
         if (!messageData || !channelSubjects) {
