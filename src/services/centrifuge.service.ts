@@ -9,12 +9,15 @@ import {
 } from 'centrifuge-ts';
 
 import {environment} from '@env';
-import {LoggerService} from './logger.service';
 
 @Injectable()
 export class CentrifugeService {
 
+    public version: string = null;
+    public transport: string = null;
+
     private _centrifuge: Centrifuge = null;
+    private _client: string = null;
     private _channels = [];
     private _messageUidSubscriptions = {};
 
@@ -34,8 +37,16 @@ export class CentrifugeService {
 
         this._centrifuge = new Centrifuge(config);
         this._centrifuge.on('connect', (context: any): void => {
-            subject.next(null);
-            subject.complete();
+            this.version = context.version || null;
+            this.transport = context.transport || null;
+            this._client = context.client || null;
+            if (context.client && context.transport) {
+                subject.next(null);
+                subject.complete();
+            } else {
+                CentrifugeService._unknownError(subject);
+                subject.complete();
+            }
         });
         this._centrifuge.on('disconnect', (context: any): void => {
             // TODO: onDisonnect event
@@ -90,9 +101,7 @@ export class CentrifugeService {
                     subject.next(null);
                     subject.complete();
                 } else {
-                    subject.error({
-                        error: 'Unknown error accured'
-                    });
+                    CentrifugeService._unknownError(subject);
                     subject.complete();
                 }
             }, (err: ICentrifugeError) => {
@@ -151,6 +160,12 @@ export class CentrifugeService {
                 delete(channelSubjects[uid]);
             }
         }
+    }
+
+    private static _unknownError(subject: Subject<any>): void {
+        subject.error({
+            error: 'Unknown error accured'
+        });
     }
 
 }
