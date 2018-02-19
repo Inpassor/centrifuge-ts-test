@@ -24,14 +24,14 @@ export class AppComponent {
         const now = +Date.now();
         const user = 'user_' + now;
         const time = String(Math.floor(now / 1000));
-        const sign = this._generateClientToken(user, time);
+        const sign = this._generateClientSign(user, time);
 
         this._centrifugeService.connect({
             url: this._settingsService.connectionUrl,
             user,
             time,
             sign,
-            sockJS: SockJS,
+            // sockJS: SockJS,
         }).subscribe(() => {
             this._centrifugeService.subscribe('system', {
                 message: this._handleMessage
@@ -44,7 +44,7 @@ export class AppComponent {
         });
     }
 
-    private _generateClientToken(user: string, time: string | number, info: string = ''): string {
+    private _generateClientSign(user: string, time: string | number, info: string = ''): string {
         const hash = sha256.hmac.create(this._settingsService.secret);
         hash.update(user);
         hash.update(String(time));
