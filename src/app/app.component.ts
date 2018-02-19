@@ -23,13 +23,13 @@ export class AppComponent {
 
         const now = +Date.now();
         const user = 'user_' + now;
-        const time = String(Math.floor(now / 1000));
-        const sign = this._generateClientSign(user, time);
+        const exp = '1000000'; // String(Math.floor(now / 1000));
+        const sign = this._generateClientSign(user, exp);
 
         this._centrifugeService.connect({
             url: this._settingsService.connectionUrl,
             user,
-            time,
+            exp,
             sign,
             // sockJS: SockJS,
         }).subscribe(() => {
@@ -44,10 +44,10 @@ export class AppComponent {
         });
     }
 
-    private _generateClientSign(user: string, time: string | number, info: string = ''): string {
+    private _generateClientSign(user: string, exp: string | number, info: string = ''): string {
         const hash = sha256.hmac.create(this._settingsService.secret);
         hash.update(user);
-        hash.update(String(time));
+        hash.update(String(exp));
         hash.update(info);
         return hash.hex();
     }
