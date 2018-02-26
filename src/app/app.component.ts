@@ -2,9 +2,8 @@ import {Component} from '@angular/core';
 
 import * as SockJS from 'sockjs-client';
 import {sha256} from 'js-sha256';
-import {
-    ICentrifugeError,
-} from 'centrifuge-ts';
+
+import {proto} from 'centrifuge-ts';
 
 import {SettingsService} from '../services/settings.service';
 import {CentrifugeService} from '../services/centrifuge.service';
@@ -38,7 +37,7 @@ export class AppComponent {
             });
             this._centrifugeService.publish('system', 'TEST!!!').subscribe(() => {
                 LoggerService.debug('Publish success!');
-            }, (err: ICentrifugeError) => {
+            }, (err: proto.IError) => {
                 LoggerService.debug('Publish error', err);
             });
         });

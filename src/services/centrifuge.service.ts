@@ -4,8 +4,7 @@ import {
     ICentrifugeConfig,
     Centrifuge,
     Subscription,
-    ICentrifugeMessage,
-    ICentrifugeError,
+    proto,
 } from 'centrifuge-ts';
 
 import {environment} from '@env';
@@ -96,7 +95,7 @@ export class CentrifugeService {
         const subject = new Subject();
         const subscription: Subscription = this._channels[channel];
         if (subscription) {
-            subscription.publish(message).then((response: ICentrifugeMessage) => {
+            subscription.publish(message).then((response: any) => {
                 if ('status' in response && response['status'] === true) {
                     subject.next(null);
                     subject.complete();
@@ -104,7 +103,7 @@ export class CentrifugeService {
                     CentrifugeService._unknownError(subject);
                     subject.complete();
                 }
-            }, (err: ICentrifugeError) => {
+            }, (err: proto.IError) => {
                 subject.error(err);
                 subject.complete();
             });
