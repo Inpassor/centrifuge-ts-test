@@ -96,13 +96,8 @@ export class CentrifugeService {
         const subscription: Subscription = this._channels[channel];
         if (subscription) {
             subscription.publish(message).then((response: any) => {
-                if ('status' in response && response['status'] === true) {
-                    subject.next(null);
-                    subject.complete();
-                } else {
-                    CentrifugeService._unknownError(subject);
-                    subject.complete();
-                }
+                subject.next(null);
+                subject.complete();
             }, (err: proto.IError) => {
                 subject.error(err);
                 subject.complete();
