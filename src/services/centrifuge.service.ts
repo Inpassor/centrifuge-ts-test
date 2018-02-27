@@ -95,7 +95,7 @@ export class CentrifugeService {
         const subject = new Subject();
         const subscription: Subscription = this._channels[channel];
         if (subscription) {
-            subscription.publish(message).then((response: any) => {
+            subscription.publish(this._anyToUint8Array(message)).then((response: any) => {
                 subject.next(null);
                 subject.complete();
             }, (err: proto.IError) => {
@@ -154,6 +154,13 @@ export class CentrifugeService {
                 delete(channelSubjects[uid]);
             }
         }
+    }
+
+    private _anyToUint8Array(data: any): Uint8Array {
+        data = JSON.stringify(data);
+        const buffer = new Uint8Array(data.length);
+        Array.prototype.forEach.call(data, (c, i) => buffer[i] = c.charCodeAt(0));
+        return buffer;
     }
 
     private static _unknownError(subject: Subject<any>): void {
