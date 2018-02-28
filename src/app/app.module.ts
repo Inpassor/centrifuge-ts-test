@@ -1,20 +1,32 @@
-import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {
+    MatMenuModule,
+    MatIconModule,
+} from '@angular/material';
 
 import {LoggerService} from '../services/logger.service';
 import {SettingsService} from '../services/settings.service';
 import {CentrifugeService} from '../services/centrifuge.service';
 
-import {AppComponent} from './app.component';
-import {SettingsComponent} from './settings.component';
+import {AppRoutingModule} from './app-routing.module';
+
+import {AppComponent} from './components';
 
 @NgModule({
     declarations: [
         AppComponent,
-        SettingsComponent,
     ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        FlexLayoutModule,
+        MatMenuModule,
+        MatIconModule,
     ],
     providers: [
         LoggerService,
