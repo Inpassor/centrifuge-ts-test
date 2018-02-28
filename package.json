@@ -22,6 +22,7 @@
         "@angular/router": "^5.2.6",
         "centrifuge-ts": "file:../../opt/repos/centrifuge-ts",
         "core-js": "^2.5.3",
+        "hammerjs": "^2.0.8",
         "js-sha256": "^0.9.0",
         "material-design-icons": "^3.0.1",
         "normalize.css": "^8.0.0",
