@@ -1,36 +1,35 @@
 import {NgModule} from '@angular/core';
-import {
-    Routes,
-    RouterModule,
-} from '@angular/router';
+import {RouterModule} from '@angular/router';
 
 import {AuthGuardService} from '../services/auth-guard.service';
 
 import {
     IndexComponent,
     SettingsComponent,
-    NotFoundComponent,
+    ErrorComponent,
 } from './components';
-
-const routes: Routes = [
-    {
-        path: '',
-        component: IndexComponent,
-    },
-    {
-        path: '**',
-        component: NotFoundComponent,
-    },
-];
 
 @NgModule({
     declarations: [
         IndexComponent,
         SettingsComponent,
-        NotFoundComponent,
+        ErrorComponent,
     ],
     imports: [
-        RouterModule.forRoot(routes),
+        RouterModule.forRoot([
+            {
+                path: '',
+                component: IndexComponent,
+            },
+            {
+                path: 'settings',
+                component: SettingsComponent,
+            },
+            {
+                path: '**',
+                component: ErrorComponent,
+            },
+        ]),
     ],
     exports: [
         RouterModule,
