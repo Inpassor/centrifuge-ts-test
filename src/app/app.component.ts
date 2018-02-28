@@ -26,7 +26,7 @@ export class AppComponent {
         const sign = this._generateClientSign(user, exp);
 
         this._centrifugeService.connect({
-            format: 'protobuf',
+            format: this._settingsService.format,
             url: this._settingsService.connectionUrl,
             user,
             exp,
