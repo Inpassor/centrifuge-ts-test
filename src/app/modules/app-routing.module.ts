@@ -1,13 +1,13 @@
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 
-import {AuthGuardService} from '../services/auth-guard.service';
+import {AuthGuardService} from '../../services/auth-guard.service';
 
 import {
     IndexComponent,
     SettingsComponent,
     ErrorComponent,
-} from './components';
+} from '../components';
 
 @NgModule({
     declarations: [
