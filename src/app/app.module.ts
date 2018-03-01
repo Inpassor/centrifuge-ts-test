@@ -4,6 +4,7 @@ import {
     Title,
 } from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {HttpClientModule} from '@angular/common/http';
 
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {
@@ -27,6 +28,7 @@ import {AppComponent} from './components';
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+        HttpClientModule,
         AppRoutingModule,
         FlexLayoutModule,
         MatMenuModule,
