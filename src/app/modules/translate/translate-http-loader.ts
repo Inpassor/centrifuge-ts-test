@@ -1,4 +1,3 @@
-import {Observable} from 'rxjs/Observable';
 import {HttpClient} from '@angular/common/http';
 import {TranslateLoader} from '@ngx-translate/core';
 
@@ -9,7 +8,7 @@ export class TranslateHttpLoader implements TranslateLoader {
                 public extension: string = '.json') {
     }
 
-    public getTranslation(language: string): Observable<Object> {
+    public getTranslation(language: string): any {
         return this._httpClient.get(`${this.url}${language}${this.extension}`);
     }
 

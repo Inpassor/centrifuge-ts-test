@@ -1,58 +1,33 @@
 import {NgModule} from '@angular/core';
 import {
-    TranslateModule,
-    TranslateLoader,
-} from '@ngx-translate/core';
-import {
     BrowserModule,
     Title,
 } from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {
-    HttpClientModule,
-    HttpClient,
-} from '@angular/common/http';
-
-import {FlexLayoutModule} from '@angular/flex-layout';
-import {
-    MatMenuModule,
-    MatIconModule,
-} from '@angular/material';
+import {HttpClientModule} from '@angular/common/http';
 
 import {LoggerService} from '../services/logger.service';
 import {AppService} from '../services/app.service';
 import {SettingsService} from '../services/settings.service';
 import {CentrifugeService} from '../services/centrifuge.service';
 
+import {TranslateModule} from './modules/translate/translate.module';
+import {MaterialModule} from './modules/material.module';
 import {AppRoutingModule} from './modules/app-routing.module';
 
 import {AppComponent} from './components';
-
-import {TranslateHttpLoader} from '../opt/translate-http-loader';
-
-export const TranslateHttpLoaderFactory = (httpClient: HttpClient) => {
-    return new TranslateHttpLoader(httpClient);
-};
 
 @NgModule({
     declarations: [
         AppComponent,
     ],
     imports: [
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: TranslateHttpLoaderFactory,
-                deps: [HttpClient]
-            }
-        }),
+        TranslateModule,
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
+        MaterialModule,
         AppRoutingModule,
-        FlexLayoutModule,
-        MatMenuModule,
-        MatIconModule,
     ],
     providers: [
         Title,

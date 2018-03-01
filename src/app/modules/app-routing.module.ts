@@ -36,7 +36,7 @@ import {
     ],
     providers: [
         AuthGuardService,
-    ]
+    ],
 })
 
 export class AppRoutingModule {
