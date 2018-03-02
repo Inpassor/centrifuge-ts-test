@@ -4,18 +4,22 @@ import {
     MatMenuModule,
     MatIconModule,
 } from '@angular/material';
+import {TranslateModule} from '@ngx-translate/core';
 
 import 'hammerjs';
 
-const modules = [
-    FlexLayoutModule,
-    MatMenuModule,
-    MatIconModule,
-];
-
 @NgModule({
-    imports: modules,
-    exports: modules,
+    imports: [
+        TranslateModule,
+        FlexLayoutModule,
+        MatMenuModule,
+        MatIconModule,
+    ],
+    exports: [
+        FlexLayoutModule,
+        MatMenuModule,
+        MatIconModule,
+    ],
 })
 
 export class MaterialModule {

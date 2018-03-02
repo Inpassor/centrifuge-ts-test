@@ -2,11 +2,14 @@ import {
     NgModule,
     APP_INITIALIZER,
 } from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
+import {
+    TranslateModule,
+    TranslateService,
+} from '@ngx-translate/core';
 
 export const AppInitFactory = (translateService: TranslateService) => {
     return () => new Promise(resolve => {
-        if (translateService.currentLang === translateService.defaultLang) {
+        if (translateService.currentLang && translateService.currentLang === translateService.defaultLang) {
             resolve();
         } else {
             translateService.onLangChange.subscribe(() => {
@@ -17,6 +20,9 @@ export const AppInitFactory = (translateService: TranslateService) => {
 };
 
 @NgModule({
+    imports: [
+        TranslateModule,
+    ],
     providers: [
         {
             provide: APP_INITIALIZER,

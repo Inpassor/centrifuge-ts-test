@@ -10,15 +10,15 @@ import {
 } from '@app/services';
 
 @NgModule({
+    imports: [
+        TranslateModule,
+    ],
     providers: [
         Title,
         LoggerService,
         AppService,
         SettingsService,
         CentrifugeService,
-    ],
-    imports: [
-        TranslateModule,
     ],
 })
 
