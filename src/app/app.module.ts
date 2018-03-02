@@ -30,7 +30,7 @@ import {
 import {
     InitModule,
     MaterialModule,
-    AppRoutingModule,
+    RouterModule,
 } from '@app/modules';
 
 import {AppComponent} from '@app/components';
@@ -56,7 +56,7 @@ import {AppComponent} from '@app/components';
         BrowserAnimationsModule,
         HttpClientModule,
         MaterialModule,
-        AppRoutingModule,
+        RouterModule,
     ],
     providers: [
         Title,

@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import {RouterModule as _RouterModule} from '@angular/router';
 import {TranslateModule} from '@ngx-translate/core';
 
 import {AuthGuardService} from '@app/services';
@@ -17,7 +17,7 @@ import {
         ErrorComponent,
     ],
     imports: [
-        RouterModule.forRoot([
+        _RouterModule.forRoot([
             {
                 path: '',
                 component: IndexComponent,
@@ -34,12 +34,12 @@ import {
         TranslateModule,
     ],
     exports: [
-        RouterModule,
+        _RouterModule,
     ],
     providers: [
         AuthGuardService,
     ],
 })
 
-export class AppRoutingModule {
+export class RouterModule {
 }
