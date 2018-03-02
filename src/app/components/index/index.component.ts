@@ -4,10 +4,12 @@ import * as SockJS from 'sockjs-client';
 import {sha256} from 'js-sha256';
 import {proto} from 'centrifuge-ts';
 
-import {LoggerService} from '../../../services/logger.service';
-import {AppService} from '../../../services/app.service';
-import {SettingsService} from '../../../services/settings.service';
-import {CentrifugeService} from '../../../services/centrifuge.service';
+import {
+    LoggerService,
+    AppService,
+    SettingsService,
+    CentrifugeService,
+} from '@app/services';
 
 @Component({
     templateUrl: './index.component.html',

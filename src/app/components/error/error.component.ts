@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import {AppService} from '../../../services/app.service';
+import {AppService} from '@app/services';
 
 @Component({
     templateUrl: './error.component.html',
