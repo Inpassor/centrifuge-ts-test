@@ -11,6 +11,7 @@ import {AppService} from '../services/app.service';
 import {SettingsService} from '../services/settings.service';
 import {CentrifugeService} from '../services/centrifuge.service';
 
+import {InitModule} from './modules/init.module';
 import {TranslateModule} from './modules/translate/translate.module';
 import {MaterialModule} from './modules/material.module';
 import {AppRoutingModule} from './modules/app-routing.module';
@@ -22,6 +23,7 @@ import {AppComponent} from './components';
         AppComponent,
     ],
     imports: [
+        InitModule,
         TranslateModule,
         BrowserModule,
         BrowserAnimationsModule,
