@@ -1,24 +1,16 @@
 import {NgModule} from '@angular/core';
-import {
-    BrowserModule,
-    Title,
-} from '@angular/platform-browser';
+import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientModule} from '@angular/common/http';
 
 import {
-    LoggerService,
-    AppService,
-    SettingsService,
-    CentrifugeService,
-} from '@app/services';
-import {
     TranslateModule,
     InitModule,
+    ServicesModule,
     MaterialModule,
     RouterModule,
     ComponentsModule,
-} from '@app/modules';
+} from 'app/modules/index';
 
 import {AppComponent} from '@app/components';
 
@@ -29,16 +21,10 @@ import {AppComponent} from '@app/components';
         HttpClientModule,
         TranslateModule,
         InitModule,
+        ServicesModule,
         MaterialModule,
         RouterModule,
         ComponentsModule,
-    ],
-    providers: [
-        Title,
-        LoggerService,
-        AppService,
-        SettingsService,
-        CentrifugeService,
     ],
     bootstrap: [AppComponent],
 })
