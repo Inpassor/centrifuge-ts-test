@@ -4,7 +4,7 @@ import {TranslateLoader} from '@ngx-translate/core';
 export class TranslateHttpLoader implements TranslateLoader {
 
     constructor(private _httpClient: HttpClient,
-                public url: string = '/assets/i18n/',
+                public url: string = '/i18n/',
                 public extension: string = '.json') {
     }
 
