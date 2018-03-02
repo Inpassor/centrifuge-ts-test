@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
+import {TranslateModule} from '@ngx-translate/core';
 
 import {AuthGuardService} from '@app/services';
 
@@ -30,6 +31,7 @@ import {
                 component: ErrorComponent,
             },
         ]),
+        TranslateModule,
     ],
     exports: [
         RouterModule,

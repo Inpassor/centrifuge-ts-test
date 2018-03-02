@@ -6,7 +6,6 @@ import {
 } from '@app/services';
 
 @Component({
-    selector: 'app-settings',
     templateUrl: './settings.component.html',
     styleUrls: ['./settings.component.scss'],
 })
