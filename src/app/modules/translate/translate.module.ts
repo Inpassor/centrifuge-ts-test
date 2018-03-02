@@ -7,10 +7,8 @@ import {
 import {HttpClient} from '@angular/common/http';
 import {TranslateHttpLoader} from './loaders/http.loader';
 
-const defaultLanguage = 'en';
-
 export const TranslateHttpLoaderFactory = (httpClient: HttpClient) => {
-    return new TranslateHttpLoader(httpClient, defaultLanguage);
+    return new TranslateHttpLoader(httpClient);
 };
 
 @NgModule({
@@ -32,7 +30,7 @@ export class TranslateModule {
 
     constructor(translateService: TranslateService) {
         // this language will be used as a fallback when a translation isn't found in the current language
-        translateService.setDefaultLang(defaultLanguage);
+        translateService.setDefaultLang('en');
 
         // the lang to use, if the lang isn't available, it will use the current loader to get them
         translateService.use('ru');

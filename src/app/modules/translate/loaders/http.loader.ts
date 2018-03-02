@@ -5,14 +5,13 @@ import {TranslateLoader} from '@ngx-translate/core';
 export class TranslateHttpLoader implements TranslateLoader {
 
     constructor(private _httpClient: HttpClient,
-                public defaultLanguage: string = 'en',
                 public url: string = '/i18n/',
                 public extension: string = '.json') {
     }
 
     public getTranslation(language: string): any {
         const subject = new Subject();
-        if (language === this.defaultLanguage) {
+        if (language === 'en') {
             subject.next(null);
             subject.complete();
         } else {
