@@ -11,11 +11,6 @@ import {
 } from '@app/components';
 
 @NgModule({
-    declarations: [
-        IndexComponent,
-        SettingsComponent,
-        ErrorComponent,
-    ],
     imports: [
         _RouterModule.forRoot([
             {
