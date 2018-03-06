@@ -25,14 +25,16 @@ export class IndexComponent {
 
         const now = +Date.now();
         const user = 'user_' + now;
-        const exp = '1000000'; // String(Math.floor(now / 1000));
-        const sign = this._generateClientSign(user, exp);
+        const exp = '1000000';
+        const info = ''; // 'TèJÿÿÿöD$,t·$0‹ÃƒÄD[Ã@';
+        const sign = this._generateClientSign(user, exp, info);
 
         this._centrifugeService.connect({
             format: this._settingsService.format,
             url: this._settingsService.connectionUrl,
             user,
             exp,
+            info,
             sign,
             // sockJS: SockJS,
         }).subscribe(() => {
