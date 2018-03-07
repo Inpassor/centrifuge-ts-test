@@ -8,4 +8,8 @@ export class SettingsService {
     // public format = 'json';
     public format = 'protobuf';
 
+    public get isProtobufFormat(): boolean {
+        return this.format === 'protobuf';
+    }
+
 }
