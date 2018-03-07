@@ -37,6 +37,7 @@ export class IndexComponent {
         if (this._settingsService.isProtobufFormat) {
             info = ctt.ClientInfo.encode(infoRaw).finish();
         } else {
+            // info = anyToUint8Array(JSON.stringify(infoRaw));
             info = JSON.stringify(infoRaw);
         }
         const sign = this._generateClientSign(user, exp, info);
