@@ -1,6 +1,9 @@
 export const anyToUint8Array = (data: any): Uint8Array => {
     data += '';
-    const buffer = new Uint8Array(data.length);
-    Array.prototype.forEach.call(data, (c, i) => buffer[i] = c.charCodeAt(0));
+    const l = data.length;
+    const buffer = new Uint8Array(l);
+    for (let i = 0; i < l; ++i) {
+        buffer[i] = data[i].charCodeAt(0);
+    }
     return buffer;
 };

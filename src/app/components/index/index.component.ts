@@ -37,7 +37,7 @@ export class IndexComponent {
         if (this._settingsService.isProtobufFormat) {
             info = ctt.ClientInfo.encode(infoRaw).finish();
         } else {
-            info = anyToUint8Array(JSON.stringify(infoRaw));
+            info = JSON.stringify(infoRaw);
         }
         const sign = this._generateClientSign(user, exp, info);
 
@@ -77,7 +77,7 @@ export class IndexComponent {
         });
     }
 
-    private _generateClientSign(user: string, exp: string | number, info: any = null): string {
+    private _generateClientSign(user: string, exp: string | number, info: string | number[] | ArrayBuffer | Uint8Array = ''): string {
         const hash = sha256.hmac.create(this._settingsService.secret);
         hash.update(user);
         hash.update(String(exp));
