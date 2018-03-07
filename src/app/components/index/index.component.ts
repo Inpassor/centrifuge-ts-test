@@ -4,6 +4,8 @@ import * as SockJS from 'sockjs-client';
 import {sha256} from 'js-sha256';
 import {proto} from 'centrifuge-ts';
 
+import {ctt} from '@proto';
+
 import {
     LoggerService,
     AppService,
@@ -26,7 +28,10 @@ export class IndexComponent {
         const now = +Date.now();
         const user = 'user_' + now;
         const exp = '1000000';
-        const info = ''; // 'TèJÿÿÿöD$,t·$0‹ÃƒÄD[Ã@';
+        const info = ctt.ClientInfo.encode({
+            x: 100,
+            y: 100,
+        }).finish();
         const sign = this._generateClientSign(user, exp, info);
 
         this._centrifugeService.connect({
@@ -40,6 +45,17 @@ export class IndexComponent {
         }).subscribe(() => {
             this._centrifugeService.subscribe('system', {
                 message: IndexComponent._handleMessage,
+                presence: (result: proto.PresenceResult) => {
+                    if (result.presence) {
+                        for (const clientUid in result.presence) {
+                            if (result.presence.hasOwnProperty(clientUid)) {
+                                const clientInfo: proto.IClientInfo = result.presence[clientUid];
+                                const connInfo = ctt.ClientInfo.decode(clientInfo.connInfo);
+                                console.log(connInfo);
+                            }
+                        }
+                    }
+                },
             });
             this._centrifugeService.publish('system', 'TEST!!!').subscribe(() => {
                 LoggerService.debug('Publish success!');
@@ -49,7 +65,7 @@ export class IndexComponent {
         });
     }
 
-    private _generateClientSign(user: string, exp: string | number, info: string = ''): string {
+    private _generateClientSign(user: string, exp: string | number, info: any = null): string {
         const hash = sha256.hmac.create(this._settingsService.secret);
         hash.update(user);
         hash.update(String(exp));

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+CUR_DIR="$(pwd)"
+cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+./node_modules/.bin/pbjs ./src/proto/ctt.proto -t static-module -o ./src/proto/ctt.js
+./node_modules/.bin/pbts -o ./src/proto/ctt.d.ts ./src/proto/ctt.js
+cd "$CUR_DIR"

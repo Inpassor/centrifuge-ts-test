@@ -10,6 +10,9 @@
             "@app/*": [
                 "app/*"
             ],
+            "@proto": [
+                "proto/ctt"
+            ],
             "@env": [
                 "environments/environment"
             ]

@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package ctt;
+
+message ClientInfo {
+    uint32 x = 1;
+    uint32 y = 2;
+}
