@@ -4,10 +4,10 @@
 @include mat-core();
 
 // https://material.io/color/#!/?view.left=0&view.right=0&secondary.color=cc4034&primary.color=474743&secondary.text.color=ffffff
-$theme-primary: mat-palette(#474743);
-$theme-accent: mat-palette(#cc4034);
-$theme-warn: mat-palette(#f00);
+// $theme-primary: mat-palette(#474743);
+//$theme-accent: mat-palette(#cc4034);
+//$theme-warn: mat-palette(#f00);
 
-$theme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
+//$theme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
 
-@include angular-material-theme($theme);
+//@include angular-material-theme($theme);
