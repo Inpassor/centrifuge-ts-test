@@ -5,7 +5,6 @@ import {sha256} from 'js-sha256';
 import {proto} from 'centrifuge-ts';
 
 import {ctt} from '@proto';
-import {anyToUint8Array} from '@root/functions';
 
 import {
     LoggerService,
@@ -29,18 +28,19 @@ export class IndexComponent {
         const now = +Date.now();
         const user = 'user_' + now;
         const exp = '1000000';
-        let info;
         const infoRaw = {
             x: 100,
             y: 100,
         };
+        let info;
+        let infoSign;
         if (this._settingsService.isProtobufFormat) {
-            info = ctt.ClientInfo.encode(infoRaw).finish();
+            info = infoSign = ctt.ClientInfo.encode(infoRaw).finish();
         } else {
-            // info = anyToUint8Array(JSON.stringify(infoRaw));
-            info = JSON.stringify(infoRaw);
+            info = infoRaw;
+            infoSign = JSON.stringify(infoRaw);
         }
-        const sign = this._generateClientSign(user, exp, info);
+        const sign = this._generateClientSign(user, exp, infoSign);
 
         this._centrifugeService.connect({
             format: this._settingsService.format,
@@ -62,7 +62,7 @@ export class IndexComponent {
                                 if (this._settingsService.isProtobufFormat) {
                                     connInfo = ctt.ClientInfo.decode(clientInfo.connInfo);
                                 } else {
-                                    // connInfo = JSON.parse(connInfo);
+                                    connInfo = clientInfo['conn_info'];
                                 }
                                 console.log(connInfo);
                             }
